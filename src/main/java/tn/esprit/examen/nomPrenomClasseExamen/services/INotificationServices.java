@@ -12,4 +12,5 @@ public interface INotificationServices {
     public Notification Add (Notification notification);
     public Notification Modify(Notification notification);
     public void Delete (Long id);
+
 }

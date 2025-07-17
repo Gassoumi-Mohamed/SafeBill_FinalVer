@@ -1,8 +1,5 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -23,6 +20,7 @@ public class Session {
     private LocalDateTime dateConnexion;
     private LocalDateTime dateExpiration;
     private LocalDateTime derniereActivite;
+    @Enumerated(EnumType.STRING)
     private Statut statut;
 
 

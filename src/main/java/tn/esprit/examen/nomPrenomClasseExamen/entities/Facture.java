@@ -17,6 +17,7 @@ public class Facture {
     private String numero;
     private float montant;
     private LocalDateTime dateEmission;
+    @Enumerated(EnumType.STRING)
     private StatutFacture statutFacture;
 
 

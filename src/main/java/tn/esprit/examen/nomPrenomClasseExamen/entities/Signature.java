@@ -1,8 +1,5 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -24,6 +21,7 @@ public class Signature {
     private LocalDateTime dateSignature;
     private String clePublicHash;
     private String clePriveeHash;
+    @Enumerated(EnumType.STRING)
     private StatutValidation statutValidation;
     private LocalDateTime dateVerification;
 
