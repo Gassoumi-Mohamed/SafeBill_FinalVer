@@ -1,6 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.config;
 import tn.esprit.examen.nomPrenomClasseExamen.services.JwtAuthFilter;
-
+//import tn.esprit.examen.nomPrenomClasseExamen.filters.RateLimitFilter;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
@@ -29,6 +29,7 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
+    //private final RateLimitFilter rateLimitFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,11 +43,14 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/webjars/**",
-                                "/Utilisateur/**"
+                                "/RegisterController/**",
+                                "/GlobalExceptionHandler"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
+
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(rateLimitFilter, JwtAuthFilter.class)
                 .userDetailsService(userDetailsService)
                 .build();
     }
@@ -60,5 +64,9 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+//    @Bean
+//    public Filter rateLimitFilter() {
+//        return new RateLimitFilter();
+//    }
 }
 

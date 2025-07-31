@@ -25,5 +25,8 @@ public class Session {
 
 
     @ManyToOne
-    private Utilisateur user;
+    @JoinColumn(name="user_id")
+    private Utilisateur utilisateur;
+
+
 }

@@ -3,20 +3,30 @@ package tn.esprit.examen.nomPrenomClasseExamen.services;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Session;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Statut;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.SessionRepository;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final SessionServices sessionServices;
+    private final SessionRepository sessionRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,9 +43,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         token = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(token);
+        try {
+            userEmail = jwtService.extractUsername(token);
+        } catch (Exception e) {
+            filterChain.doFilter(request, response);
+            return; // Token malformé ou invalide
+        }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            Optional<Session> sessionOpt = sessionRepository.findByToken(token);
+
+            // Vérifier si session existe, est active et non expirée
+            boolean sessionValide = sessionOpt.isPresent()
+                    && sessionOpt.get().getStatut() == Statut.ACTIVE
+                    && sessionOpt.get().getDateExpiration().isAfter(LocalDateTime.now());
+
+            if (!sessionValide) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            // Authentification normale
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(token, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken =
@@ -45,5 +73,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+
     }
 }

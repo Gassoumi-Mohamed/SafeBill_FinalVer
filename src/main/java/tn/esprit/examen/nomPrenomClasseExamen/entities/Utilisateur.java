@@ -21,6 +21,7 @@ public class Utilisateur {
     @Enumerated(EnumType.STRING)
     private Role role;
     private LocalDateTime dateInscription;
+    private String telephone;
 
 
     @OneToMany(mappedBy="user")
@@ -29,7 +30,7 @@ public class Utilisateur {
     @OneToMany(mappedBy="user")
     private Set<Verification> verifications;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="utilisateur")
     private Set<Session> sessions;
 
     @OneToMany(mappedBy="user")

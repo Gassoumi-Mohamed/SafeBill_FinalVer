@@ -12,6 +12,7 @@ public class nomPrenomClasseExamenApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(nomPrenomClasseExamenApplication.class, args);
+        
     }
 
 }

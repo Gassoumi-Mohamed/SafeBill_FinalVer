@@ -1,5 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services;
 
+import tn.esprit.examen.nomPrenomClasseExamen.dto.RegisterRequest;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.TentativeFraude;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 
@@ -12,4 +13,5 @@ public interface IUtilisateurServices {
     public Utilisateur Add (Utilisateur utilisateur);
     public Utilisateur Modify(Utilisateur utilisateur);
     public void Delete (Long id);
+    public Utilisateur register(RegisterRequest request);
 }

@@ -30,7 +30,7 @@ public class Facture {
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "signature_id")
-    private Signature signature;
+    private SignatureNum signature;
 
     @ManyToOne
     private Utilisateur user;
