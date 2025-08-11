@@ -7,10 +7,6 @@ import java.util.List;
 
 public interface INotificationServices {
 
-    public List<Notification> GetAll();
-    public Notification GetById(Long Id);
-    public Notification Add (Notification notification);
-    public Notification Modify(Notification notification);
-    public void Delete (Long id);
+
 
 }

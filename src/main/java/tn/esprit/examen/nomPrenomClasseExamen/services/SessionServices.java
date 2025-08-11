@@ -60,40 +60,4 @@ public class SessionServices implements ISessionServices{
         return true;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public List<Session> GetAll() {
-        return sessionRepository.findAll();
-    }
-
-    @Override
-    public Session GetById(Long Id) {
-        return sessionRepository.findById(Id).get();
-    }
-
-    @Override
-    public Session Add(Session session) {
-        return sessionRepository.save(session);
-    }
-
-    @Override
-    public Session Modify(Session session) {
-        return sessionRepository.save(session);
-    }
-
-    @Override
-    public void Delete(Long id) {
-        sessionRepository.deleteById(id);
-
-    }
 }

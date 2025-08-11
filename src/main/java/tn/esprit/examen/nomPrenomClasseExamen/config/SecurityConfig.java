@@ -1,6 +1,7 @@
 package tn.esprit.examen.nomPrenomClasseExamen.config;
+import jakarta.servlet.http.HttpServletRequest;
 import tn.esprit.examen.nomPrenomClasseExamen.services.JwtAuthFilter;
-//import tn.esprit.examen.nomPrenomClasseExamen.filters.RateLimitFilter;
+import tn.esprit.examen.nomPrenomClasseExamen.filters.RateLimitFilter;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
@@ -13,8 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 import tn.esprit.examen.nomPrenomClasseExamen.services.CustomUserDetailsService;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
@@ -29,10 +29,12 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
-    //private final RateLimitFilter rateLimitFilter;
+    private final RateLimitFilter rateLimitFilter;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -44,8 +46,10 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/webjars/**",
                                 "/RegisterController/**",
-                                "/GlobalExceptionHandler"
-                        ).permitAll()
+                                "/GlobalExceptionHandler",
+                                "/FactureController/**",
+                                "/SignatureController/**"
+                                ).permitAll()
                         .anyRequest().authenticated()
                 )
 
@@ -53,6 +57,7 @@ public class SecurityConfig {
                 //.addFilterBefore(rateLimitFilter, JwtAuthFilter.class)
                 .userDetailsService(userDetailsService)
                 .build();
+
     }
 
     @Bean

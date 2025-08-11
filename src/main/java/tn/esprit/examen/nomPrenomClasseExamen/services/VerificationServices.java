@@ -13,31 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class VerificationServices implements IVerificationServices{
-    @Autowired
-    VerificationRepository verificationRepository;
 
-    @Override
-    public List<Verification> GetAll() {
-        return verificationRepository.findAll();
-    }
-
-    @Override
-    public Verification GetById(Long Id) {
-        return verificationRepository.findById(Id).get();
-    }
-
-    @Override
-    public Verification Add(Verification verification) {
-        return verificationRepository.save(verification);
-    }
-
-    @Override
-    public Verification Modify(Verification verification) {
-        return verificationRepository.save(verification);
-    }
-
-    @Override
-    public void Delete(Long id) {
-        verificationRepository.deleteById(id);
-    }
 }

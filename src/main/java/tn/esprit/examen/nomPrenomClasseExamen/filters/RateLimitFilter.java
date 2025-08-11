@@ -24,15 +24,20 @@ public class RateLimitFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI();
+        String ip = httpRequest.getRemoteAddr();
+        String userAgent = httpRequest.getHeader("User-Agent");
 
-        // Exclure Swagger et docs de l'API
+        //Exclure Swagger et docs de l'API
         if (path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")
-                || path.startsWith("/swagger-ui.html") || path.startsWith("/webjars")) {
+                || path.startsWith("/swagger-ui.html") || path.startsWith("/webjars")
+                || path.startsWith("/SafeBillCheck")|| "OPTIONS".equalsIgnoreCase(httpRequest.getMethod())
+                || (userAgent != null && userAgent.contains("PostmanRuntime"))
+                || "127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip))  {
             chain.doFilter(request, response);
             return;
         }
 
-        String ip = httpRequest.getRemoteAddr();
+       // String ip = httpRequest.getRemoteAddr();
         Bucket bucket = buckets.computeIfAbsent(ip, this::createNewBucket);
 
         // Log des jetons restants
@@ -45,6 +50,7 @@ public class RateLimitFilter implements Filter {
             httpResponse.setStatus(429); // Too Many Requests
             httpResponse.getWriter().write("Rate limit exceeded. Try again later.");
         }
+
     }
 
     // Crée un seau avec 5 requêtes par minute

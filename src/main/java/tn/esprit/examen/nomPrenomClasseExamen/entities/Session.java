@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Session {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idSession;
     private String token;
     private String ip;

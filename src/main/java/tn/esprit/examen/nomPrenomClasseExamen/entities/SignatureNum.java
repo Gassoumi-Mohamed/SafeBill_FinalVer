@@ -15,16 +15,12 @@ public class SignatureNum {
     @GeneratedValue
     private Long idSignature;
     private String empreinte;
+    @Column(length = 10000)
     private String signatureNumerique;
-    private String algorithmeHash;
-    private String algorithmeSignature;
     private LocalDateTime dateSignature;
-    private String clePublicHash;
-    private String clePriveeHash;
     @Enumerated(EnumType.STRING)
     private StatutValidation statutValidation;
     private LocalDateTime dateVerification;
-
 
     @OneToOne(mappedBy="signature")
     private Facture facture;

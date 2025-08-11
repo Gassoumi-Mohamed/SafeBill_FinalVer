@@ -12,7 +12,7 @@ import java.util.Set;
 @Builder
 public class Facture {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFacture;
     private String numero;
     private float montant;

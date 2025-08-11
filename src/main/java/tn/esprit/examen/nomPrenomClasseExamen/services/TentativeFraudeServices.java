@@ -13,32 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class TentativeFraudeServices implements ITentativeFraudeServices{
-    @Autowired
-    TentativeFraudeRepository tentativeFraudeRepository;
 
-    @Override
-    public List<TentativeFraude> GetAll() {
-        return tentativeFraudeRepository.findAll();
-    }
 
-    @Override
-    public TentativeFraude GetById(Long Id) {
-        return tentativeFraudeRepository.findById(Id).get();
-    }
-
-    @Override
-    public TentativeFraude Add(TentativeFraude tentativeFraude) {
-        return tentativeFraudeRepository.save(tentativeFraude);
-    }
-
-    @Override
-    public TentativeFraude Modify(TentativeFraude tentativeFraude) {
-        return tentativeFraudeRepository.save(tentativeFraude);
-    }
-
-    @Override
-    public void Delete(Long id) {
-        tentativeFraudeRepository.deleteById(id);
-
-    }
 }

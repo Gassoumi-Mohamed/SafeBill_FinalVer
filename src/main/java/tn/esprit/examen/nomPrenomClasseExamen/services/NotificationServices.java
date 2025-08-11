@@ -12,31 +12,5 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class NotificationServices implements INotificationServices{
-    @Autowired
-    NotificationRepository notificationRepository;
-    @Override
-    public List<Notification> GetAll() {
-        return notificationRepository.findAll();
-    }
 
-    @Override
-    public Notification GetById(Long Id) {
-        return notificationRepository.findById(Id).get();
-    }
-
-    @Override
-    public Notification Add(Notification notification) {
-        return notificationRepository.save(notification);
-    }
-
-    @Override
-    public Notification Modify(Notification notification) {
-        return notificationRepository.save(notification);
-    }
-
-    @Override
-    public void Delete(Long id) {
-        notificationRepository.deleteById(id);
-
-    }
 }
