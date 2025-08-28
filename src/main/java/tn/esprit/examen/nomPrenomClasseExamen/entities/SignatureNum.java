@@ -1,8 +1,9 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-
 
 @Entity
 @AllArgsConstructor
@@ -20,8 +21,10 @@ public class SignatureNum {
     private LocalDateTime dateSignature;
     @Enumerated(EnumType.STRING)
     private StatutValidation statutValidation;
-    private LocalDateTime dateVerification;
+
 
     @OneToOne(mappedBy="signature")
+    @JsonIgnore
     private Facture facture;
 }
+

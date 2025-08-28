@@ -21,7 +21,5 @@ public class TentativeFraude {
     private LocalDateTime dateDetection;
 
 
-    @OneToOne(mappedBy="tentativeFraude")
-    private Facture facture;
 
 }

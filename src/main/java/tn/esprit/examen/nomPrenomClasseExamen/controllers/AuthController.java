@@ -42,7 +42,7 @@ public class AuthController {
         // 4. créer la session en base String
         sessionServices.createSession(utilisateur, token, ip, userAgent, LocalDateTime.now().plusHours(1), Statut.ACTIVE); // expiration 1h
 
-        return new AuthResponse(token);
+        return new AuthResponse(token, utilisateur.getRole(), utilisateur.getId());
     }
 
 

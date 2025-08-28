@@ -22,9 +22,7 @@ public class Verification {
 
 
 
-    @ManyToOne
-    private Utilisateur user;
 
-    @ManyToOne
-    private Facture facture;
+
+
 }

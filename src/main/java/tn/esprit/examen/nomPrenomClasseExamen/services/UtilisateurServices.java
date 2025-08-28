@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.examen.nomPrenomClasseExamen.dto.RegisterRequest;
+import tn.esprit.examen.nomPrenomClasseExamen.dto.UtilisateurDTO;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Role;
 import tn.esprit.examen.nomPrenomClasseExamen.entities.Utilisateur;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.UtilisateurRepository;
 
@@ -42,6 +44,19 @@ public class UtilisateurServices implements IUtilisateurServices{
         return utilisateurRepository.findAll();
     }
 
+    public List<UtilisateurDTO> GetByRole() {
+        return utilisateurRepository.findAllByRole(Role.CLIENT)
+                .stream()
+                .map(u -> new UtilisateurDTO(
+                        u.getId(),
+                        u.getNom(),
+                        u.getPrenom(),
+                        u.getEmail(),
+                        u.getRole().toString()
+                ))
+                .toList();
+    }
+
     @Override
     public Utilisateur GetById(Long Id) {
         return utilisateurRepository.findById(Id).get();
@@ -60,5 +75,13 @@ public class UtilisateurServices implements IUtilisateurServices{
     @Override
     public void Delete(Long id) {
         utilisateurRepository.deleteById(id);
+    }
+
+    public Utilisateur AddAdmin(Utilisateur utilisateur){
+        if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
+            throw new RuntimeException("Email déjà utilisé !");
+        }
+        utilisateur.setRole(Role.ADMIN);
+        return utilisateurRepository.save(utilisateur);
     }
 }

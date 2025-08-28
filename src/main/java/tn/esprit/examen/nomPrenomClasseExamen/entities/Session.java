@@ -1,4 +1,5 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ public class Session {
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonIgnore
     private Utilisateur utilisateur;
 
 

@@ -1,6 +1,7 @@
 package tn.esprit.examen.nomPrenomClasseExamen.services;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
@@ -16,12 +17,10 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.Facture;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.SignatureNum;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.StatutFacture;
-import tn.esprit.examen.nomPrenomClasseExamen.entities.StatutValidation;
+import tn.esprit.examen.nomPrenomClasseExamen.entities.*;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.FactureRepository;
 import tn.esprit.examen.nomPrenomClasseExamen.repositories.SignatureRepository;
+import tn.esprit.examen.nomPrenomClasseExamen.repositories.UtilisateurRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,7 +40,14 @@ public class FactureServices implements IFactureServices{
 
     private final FactureRepository factureRepository;
     private final SignatureRepository signatureNumRepository;
+    private final UtilisateurRepository utilisateurRepository;
+    public List<Facture> GetFacturesByClientId(Long id){
+        return factureRepository.findByClientId(id);
+    }
 
+    public Facture GetFactureById(Long id){
+        return factureRepository.findByidFacture(id);
+    }
     public Facture CreateFacture (Facture facture){
         return factureRepository.save(facture);
     }
@@ -102,7 +108,10 @@ public class FactureServices implements IFactureServices{
 
 
     // Méthode principale pour créer et sauvegarder une facture avec sa signature
-    public Facture createFactureWithSignature(Facture facture) throws Exception {
+    public Facture createFactureWithSignature(Facture facture, Long id) throws Exception {
+        Utilisateur utilisateur = utilisateurRepository.findByid(id);
+        if (facture.getDateEmission() == null) {
+            facture.setDateEmission(LocalDateTime.now());}
         // Le contenu de la facture à signer
         String montantStr = String.format("%.2f", facture.getMontant());
         String documentASigner = facture.getNumero() + montantStr + facture.getDateEmission().toString();
@@ -142,6 +151,8 @@ public class FactureServices implements IFactureServices{
 
         // Associer la signature à la facture
         facture.setSignature(sig);
+        facture.setUser(utilisateur);
+        facture.setStatutFacture(StatutFacture.NON_PAYEE);
         System.out.println("Signature numérique générée : " + signatureNumerique);
         System.out.println("Longueur : " + signatureNumerique.length());
 
@@ -212,6 +223,7 @@ public class FactureServices implements IFactureServices{
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime timestampGeneration;
         private boolean estPayee;
+        @JsonIgnore
         private String antiReplayToken;
     }
 
@@ -248,6 +260,8 @@ public class FactureServices implements IFactureServices{
         return VerificationResponse.valid(facture);
     }
 
+
+
     private boolean verifySignature(String message, String signatureBase64, PublicKey publicKey) throws Exception {
         Signature verifier = Signature.getInstance("SHA256withRSA");
         verifier.initVerify(publicKey);
@@ -278,6 +292,7 @@ public class FactureServices implements IFactureServices{
             return new VerificationResponse(false, reason, null);
         }
     }
+
 
 
 }

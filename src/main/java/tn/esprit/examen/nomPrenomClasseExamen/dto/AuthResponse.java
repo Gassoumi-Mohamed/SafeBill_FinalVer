@@ -1,4 +1,7 @@
 package tn.esprit.examen.nomPrenomClasseExamen.dto;
 
-public record AuthResponse(String token) {
+import tn.esprit.examen.nomPrenomClasseExamen.entities.Role;
+
+public record AuthResponse(String token,Role role, Long id) {
+
 }

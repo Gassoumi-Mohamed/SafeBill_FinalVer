@@ -1,8 +1,12 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-import java.util.Set;
+
 
 @Entity
 @AllArgsConstructor
@@ -16,22 +20,20 @@ public class Facture {
     private Long idFacture;
     private String numero;
     private float montant;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateEmission;
     @Enumerated(EnumType.STRING)
     private StatutFacture statutFacture;
 
 
-    @OneToMany(mappedBy="facture")
-    private Set<Verification> verifications;
-
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "tentative_id")
-    private TentativeFraude tentativeFraude;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "signature_id")
     private SignatureNum signature;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private Utilisateur user;
 }

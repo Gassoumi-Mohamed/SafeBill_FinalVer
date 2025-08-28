@@ -1,4 +1,6 @@
 package tn.esprit.examen.nomPrenomClasseExamen.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -18,23 +20,16 @@ public class Utilisateur {
     private String prenom;
     private String email;
     private String mdp;
-    @Enumerated(EnumType.STRING)
-    private Role role;
     private LocalDateTime dateInscription;
     private String telephone;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
-    @OneToMany(mappedBy="user")
-    private Set<Notification> notifications;
-
-    @OneToMany(mappedBy="user")
-    private Set<Verification> verifications;
 
     @OneToMany(mappedBy="utilisateur")
     private Set<Session> sessions;
 
-    @OneToMany(mappedBy="user")
-    private Set<LogAccess> logAccesses;
 
     @OneToMany(mappedBy="user", cascade=CascadeType.ALL)
     private Set<Facture> factures;

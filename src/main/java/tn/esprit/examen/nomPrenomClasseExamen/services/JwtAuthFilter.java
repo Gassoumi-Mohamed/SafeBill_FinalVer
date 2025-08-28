@@ -32,8 +32,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().contains("/FactureController") &&
-                request.getServletPath().contains("/qrcode") && request.getServletPath().contains("/verify") ){
+        String path = request.getRequestURI();
+        if (path.startsWith("/SafeBillCheck/FactureController")|| request.getServletPath().contains("/FactureController") ||
+                request.getServletPath().contains("/SafeBillCheck")) {
             filterChain.doFilter(request, response);
             return;
         }

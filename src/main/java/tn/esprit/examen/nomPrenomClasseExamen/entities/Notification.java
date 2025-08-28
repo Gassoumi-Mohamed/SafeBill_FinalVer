@@ -21,6 +21,5 @@ public class Notification {
     private LocalDateTime dateEnvoie;
     private Boolean estLue;
 
-    @ManyToOne
-    private Utilisateur user;
+
 }

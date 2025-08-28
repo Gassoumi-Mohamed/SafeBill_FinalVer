@@ -22,7 +22,6 @@ public class LogAccess {
     private String action;
     private LocalDateTime date;
 
-
     @ManyToOne
     private Utilisateur user;
 }
