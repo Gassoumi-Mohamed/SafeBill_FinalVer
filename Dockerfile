@@ -1,5 +1,5 @@
 # Étape 1 : image de base Java
-FROM openjdk:21-jdk
+FROM openjdk:17-jdk-slim
 
 # Définir le répertoire de travail
 WORKDIR /app
