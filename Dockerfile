@@ -1,5 +1,5 @@
 # Étape 1 : image de base Java (version stable)
-FROM openjdk:17-jdk‑slim
+FROM openjdk:17-jdk-slim
 
 # Définir le répertoire de travail dans le container
 WORKDIR /app
